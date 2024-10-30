@@ -1,6 +1,7 @@
 import {createHydrogenContext} from '@shopify/hydrogen';
 import {AppSession} from '~/lib/session';
 import {CART_QUERY_FRAGMENT} from '~/lib/fragments';
+import { createSwymApiClient } from './swym/api/createSwymApiClient.server';
 
 /**
  * The context implementation is separate from server.ts
@@ -35,8 +36,10 @@ export async function createAppLoadContext(request, env, executionContext) {
     },
   });
 
+  const swym = createSwymApiClient({ cache, waitUntil, env, request, session });
   return {
     ...hydrogenContext,
+    swym
     // declare additional Remix loader context
   };
 }

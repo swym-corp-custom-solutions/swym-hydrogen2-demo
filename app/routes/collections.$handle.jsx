@@ -8,6 +8,7 @@ import {
 } from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import WishlistButton, { loader as wishlistButtonLoader } from '~/components/wishlist/WishlistButton';
 
 /**
  * @type {MetaFunction<typeof loader>}
@@ -26,7 +27,9 @@ export async function loader(args) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return defer({...deferredData, ...criticalData});
+  const swymLoaderData = await wishlistButtonLoader(args);
+
+  return defer({...deferredData, ...criticalData, ...swymLoaderData});
 }
 
 /**
@@ -130,6 +133,7 @@ function ProductItem({product, loading}) {
           sizes="(min-width: 45em) 400px, 100vw"
         />
       )}
+      <WishlistButton product={product} buttonType={'icon'} addToMultiList={true}></WishlistButton>
       <h4>{product.title}</h4>
       <small>
         <Money data={product.priceRange.minVariantPrice} />
@@ -164,6 +168,7 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
     }
     variants(first: 1) {
       nodes {
+        id
         selectedOptions {
           name
           value

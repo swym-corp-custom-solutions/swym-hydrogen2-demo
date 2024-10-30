@@ -15,6 +15,7 @@ import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from '~/components/PageLayout';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
+import swymStyles from '~/lib/swym/styles.css?url';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -39,6 +40,7 @@ export function links() {
   return [
     {rel: 'stylesheet', href: resetStyles},
     {rel: 'stylesheet', href: appStyles},
+    { rel: 'stylesheet', href: swymStyles },
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
