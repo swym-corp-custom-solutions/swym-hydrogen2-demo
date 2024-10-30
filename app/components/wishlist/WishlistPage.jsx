@@ -24,7 +24,7 @@ export function EmptyWishlist(){
       </p>
       <br />
       <div className='swym-hl-continue-shop-btn swym-hl-bg-color swym-hl-text-color' onClick={()=>{
-        window.location.href = '/collections'
+        window.location.href = '/collections/all'
       }}>Continue Shopping</div>
     </div>
   )
