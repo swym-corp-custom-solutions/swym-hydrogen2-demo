@@ -78,6 +78,15 @@ export function HeaderMenu({
           </NavLink>
         );
       })}
+      <NavLink
+          end
+          onClick={close}
+          prefetch="intent"
+          style={activeLinkStyle}
+          to="/wishlist"
+        >
+          Wishlist
+        </NavLink>
     </nav>
   );
 }
