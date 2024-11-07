@@ -10,7 +10,8 @@ import {getVariantUrl} from '~/lib/variants';
 import {ProductPrice} from '~/components/ProductPrice';
 import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
-import WishlistButton, { loader as wishlistButtonLoader } from '~/components/wishlist/WishlistButton';
+import WishlistButton from '~/lib/swym/components/wishlist/WishlistButton';
+import { fetchWishlist } from '~/lib/swym/loaders/swymloaders';
 
 /**
  * @type {MetaFunction<typeof loader>}
@@ -29,7 +30,7 @@ export async function loader(args) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  const swymLoaderData = await wishlistButtonLoader(args);
+  const swymLoaderData = await fetchWishlist(args);
 
   return defer({...deferredData, ...criticalData, ...swymLoaderData});
 }

@@ -1,4 +1,4 @@
-import {createHydrogenContext} from '@shopify/hydrogen';
+import {createCustomerAccountClient, createHydrogenContext} from '@shopify/hydrogen';
 import {AppSession} from '~/lib/session';
 import {CART_QUERY_FRAGMENT} from '~/lib/fragments';
 import { createSwymApiClient } from './swym/api/createSwymApiClient.server';
@@ -36,10 +36,19 @@ export async function createAppLoadContext(request, env, executionContext) {
     },
   });
 
+  const customerAccount = createCustomerAccountClient({
+    waitUntil,
+    request,
+    session,
+    customerAccountId: env.PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID,
+    shopId: env.SHOP_ID
+  });
+
   const swym = createSwymApiClient({ cache, waitUntil, env, request, session });
   return {
     ...hydrogenContext,
-    swym
+    swym,
+    customerAccount
     // declare additional Remix loader context
   };
 }

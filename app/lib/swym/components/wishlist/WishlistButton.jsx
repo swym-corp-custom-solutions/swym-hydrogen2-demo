@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLoaderData } from '@remix-run/react';
 import AddToWishlistPopup from './AddToWishlistPopup';
-import WishlistContext from './wishlist-context';
 import './WishlistButton.css';
-import SWYM_CONFIG from '~/lib/swym/swymconfig';
-import { CacheNone } from '@shopify/hydrogen';
 
-export const loader = async ({ context }) => {
-  const wishlist = await context.swym.fetchWishlist({ cache: CacheNone()});
-  return { wishlist };
-};
 
 function WishlistIcon({ style }) {
   return (

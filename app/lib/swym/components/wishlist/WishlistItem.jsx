@@ -1,5 +1,5 @@
-import { AddToCartButton } from '../AddToCartButton';
-import { useAside } from '../Aside';
+import { useAside } from '~/components/Aside';
+import { AddToCartButton } from '~/components/AddToCartButton';
 import './wishlistItem.css';
 
 export default function WishlistItem({ productId, variantId, product, readOnly = true , onRemoveItem }){

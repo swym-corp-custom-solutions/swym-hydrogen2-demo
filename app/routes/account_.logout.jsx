@@ -1,4 +1,5 @@
 import {redirect} from '@shopify/remix-oxygen';
+import { REG_ID } from '~/lib/swym/swymConstants';
 
 // if we dont implement this, /account/logout will get caught by account.$.tsx to do login
 
@@ -10,6 +11,7 @@ export async function loader() {
  * @param {ActionFunctionArgs}
  */
 export async function action({context}) {
+  context.session.unset(REG_ID);
   return context.customerAccount.logout();
 }
 

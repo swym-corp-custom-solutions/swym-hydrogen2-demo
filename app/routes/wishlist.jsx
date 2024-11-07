@@ -1,9 +1,7 @@
-import WishlistPage, { loader as wishlistLoader } from '~/components/wishlist/WishlistPage';
-import { useLoaderData } from "@remix-run/react";
-import SWYM_CONFIG from "~/lib/swym/swymconfig";
-import { REG_ID, SESSION_ID } from "~/lib/swym/swymConstants";
+import WishlistPage from '~/lib/swym/components/wishlist/WishlistPage';
+import { fetchWishlist } from '~/lib/swym/loaders/swymloaders';
 
 
-export const loader = wishlistLoader;
+export const loader = fetchWishlist;
 
 export default WishlistPage;

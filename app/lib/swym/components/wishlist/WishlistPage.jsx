@@ -1,14 +1,7 @@
 import { useFetcher, useLoaderData } from '@remix-run/react';
-import { CacheNone } from '@shopify/hydrogen';
 import { useEffect, useState } from 'react';
-import { REG_ID, SESSION_ID } from '~/lib/swym/swymConstants';
 import './WishlistPage.css';
 import WishlistItem from './WishlistItem';
-
-export const loader = async ({ context }) => {
-  const wishlist = await context.swym.fetchWishlist({ cache: CacheNone()});
-  return { wishlist };
-};
 
 export function EmptyWishlist(){
   return (

@@ -1,6 +1,4 @@
-import WishlistPage, { loader as wishlistLoader } from '~/components/wishlist/WishlistPage';
 import { json, useLoaderData } from "@remix-run/react";
-import SWYM_CONFIG from "~/lib/swym/swymconfig";
 import { REG_ID, SESSION_ID } from "~/lib/swym/swymConstants";
 import { CacheNone } from '@shopify/hydrogen';
 

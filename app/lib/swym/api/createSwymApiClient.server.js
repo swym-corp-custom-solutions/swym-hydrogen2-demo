@@ -1,4 +1,4 @@
-import {createWithCache, CacheLong} from '@shopify/hydrogen';
+import {createWithCache, CacheLong, CacheNone} from '@shopify/hydrogen';
 import { json } from "@remix-run/server-runtime";
 import { v4 as uuidv4 } from "uuid";
 import SWYM_CONFIG from '~/lib/swym/swymconfig';
@@ -15,7 +15,7 @@ export function createSwymApiClient({
 
   const withCache = createWithCache({cache, waitUntil});
 
-  async function generateRegId(options = { cache: CacheLong() }) {
+  async function generateRegId(options = { cache: CacheNone() }) {
     return withCache(
       ['swym', request.url],
       options.cache,
@@ -301,6 +301,56 @@ export function createSwymApiClient({
   }
   
 
+  async function guestValidateSync(useremail, options = { cache: CacheNone() }) {
+    return withCache(
+      ['swym', request.url],
+      options.cache,
+      async function () {
+        
+        if (!session.get(REG_ID)) {
+          await generateRegId();  // Call generateRegId instead of callGenrateRegidAPI
+          return guestValidateSync(useremail);
+        }
+
+        const urlencoded = new URLSearchParams();
+        urlencoded.append('regid', session.get(REG_ID));
+        urlencoded.append('useremail', useremail);
+        urlencoded.append('useragenttype',  "mobileApp");
+      
+
+        const swymApiEndpoint = `${SWYM_CONFIG.SWYM_ENDPOINT}/storeadmin/v3/user/guest-validate-sync`;
+        const apiKey = SWYM_CONFIG.REST_API_KEY;
+        const pid = SWYM_CONFIG.PID;
+
+        // Base64 encoding of pid:apiKey
+        const encodedCredentials = btoa(`${pid}:${apiKey}`);
+
+        try{
+            // Make the API request to generate regid
+            const response = await fetch(swymApiEndpoint, {
+              method: "POST",
+              headers: {
+                  "Authorization": `Basic ${encodedCredentials}`,
+                  "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: urlencoded,
+            });
+
+            // Check if the request was successful
+            if (!response.ok) {
+            throw new Error("Failed to sync");
+            }
+
+            // Parse the response
+            const data = await response.json();
+            session.set(REG_ID, data.regid);
+            return data;
+        }catch (error) {
+            return json({ error: error.message }, { status: 500 });
+        }
+      },
+    );
+  }
   
-  return { generateRegId, createList, updateList, addToWishlist, removeFromWishlist, fetchWishlist, fetchListWithContents };
+  return { generateRegId, createList, updateList, addToWishlist, removeFromWishlist, fetchWishlist, fetchListWithContents, guestValidateSync };
 }
