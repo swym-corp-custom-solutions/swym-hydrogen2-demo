@@ -209,7 +209,11 @@ export function createSwymApiClient({
           `${SWYM_CONFIG.SWYM_ENDPOINT}/api/v3/lists/update-ctx?pid=${encodeURIComponent(SWYM_CONFIG.PID)}`,
           {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            headers: { 
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Accept': 'application/json',
+              'user-agent': 'headlesswebApp' 
+            },
             body: urlencoded,
           }
         );

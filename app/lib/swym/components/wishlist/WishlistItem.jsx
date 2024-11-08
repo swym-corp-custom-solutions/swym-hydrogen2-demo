@@ -4,7 +4,7 @@ import './wishlistItem.css';
 
 export default function WishlistItem({ productId, variantId, product, readOnly = true , onRemoveItem }){
     const {open} = useAside();
-    let selectedVariant = product.selectedVariant.node;
+    let selectedVariant = product.selectedVariant && product.selectedVariant.node;
     return (
         <div className='swym-hl-listitem'>
             <div className='swym-hl-wishlist-item-content'>

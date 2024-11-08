@@ -38,8 +38,17 @@ export const syncUser = async ({ context }) => {
     return { data };
 }
 
-export const fetchWishlist = async ({ context }) => {
-  await syncUser({ context });
-  const wishlist = await context.swym.fetchWishlist({ cache: CacheNone()});
-  return { wishlist };
+export const loadwishlistData = async ({ context, request }) => {
+    await syncUser({ context });
+    const wishlist = await context.swym.fetchWishlist({ cache: CacheNone()});
+    return { wishlist };
+};
+
+export const loadShareWishlistData = async ({ context, request }) => {
+    const url = new URL(request.url);
+    const hkey = url.searchParams.get("hkey");
+    const lid = url.searchParams.get("lid");
+    await syncUser({ context });
+    const listContent = await context.swym.fetchListWithContents(lid, { cache: CacheNone()});
+    return { listContent };
 };

@@ -43,6 +43,7 @@ export function useWishlistData(selectedList) {
 }
 
 export default function WishlistPage() {
+  const removeItemFetcher = useFetcher();
   const { wishlist } = useLoaderData();
 
   const [selectedList, setselectedList] = useState();
@@ -84,6 +85,18 @@ export default function WishlistPage() {
 
   const toggleMenu = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const removeItemFromWishlist = (item) => {
+    removeItemFetcher.submit(
+      {
+        productId:item.empi,
+        variantId: item.epi,
+        productUrl: item.du,
+        listId: item.lid,
+      },
+      { method: 'post', action: '/wishlist/api/remove' }
+    );
   };
 
   return (
