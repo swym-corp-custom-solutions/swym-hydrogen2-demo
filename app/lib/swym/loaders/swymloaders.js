@@ -35,13 +35,14 @@ export const syncUser = async ({ context }) => {
     if(email){
         data = await context.swym.guestValidateSync(email);
     }
-    return { data };
+    return { data, email };
 }
 
 export const loadwishlistData = async ({ context, request }) => {
-    await syncUser({ context });
+    const isLoggedIn = await context.customerAccount.isLoggedIn();
+    const { data, email } = await syncUser({ context });
     const wishlist = await context.swym.fetchWishlist({ cache: CacheNone()});
-    return { wishlist };
+    return { wishlist, email, isLoggedIn };
 };
 
 export const loadShareWishlistData = async ({ context, request }) => {

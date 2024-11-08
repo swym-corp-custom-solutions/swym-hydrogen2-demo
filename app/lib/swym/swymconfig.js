@@ -4,7 +4,7 @@ const SWYM_CONFIG = {
     PID:  import.meta.env.VITE_SWYM_PID,
     defaultWishlistName: 'My Wishlist',
     alertTimeOut: 5000,
-    swymSharedURL: 'swym/shared-wishlist',
+    swymSharedURL: 'shared-wishlist',
     swymSharedMediumCopyLink: 'copylink',
   };
 

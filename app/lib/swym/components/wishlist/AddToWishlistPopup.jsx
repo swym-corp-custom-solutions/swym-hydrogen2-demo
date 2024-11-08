@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import './AddToWishlistPopup.css';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { getWishlistBadgeLetters } from '~/lib/swym/Utils/utilsFunction';
-import SWYM_CONFIG from '~/lib/swym/swymconfig';
+
 
 export function validateString(name, errorsObj) {
     if (!name) {
@@ -21,18 +21,6 @@ export const validateUniqueString = (newList, previousListArr, errorStr) => {
         return errorStr;
     }
 };
-
-function Loader({ showLoading, width = 30 }) {
-    return (
-        <>
-            {showLoading &&
-                <div className='swym-hl-modal-loader'>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width={width}><radialGradient id="a12" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stopColor="currentColor"></stop><stop offset=".3" stopColor="currentColor" stopOpacity=".9"></stop><stop offset=".6" stopColor="currentColor" stopOpacity=".6"></stop><stop offset=".8" stopColor="currentColor" stopOpacity=".3"></stop><stop offset="1" stopColor="currentColor" stopOpacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a12)" strokeWidth="15" strokeLinecap="round" strokeDasharray="200 1000" strokeDashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="currentColor" strokeWidth="15" strokeLinecap="round" cx="100" cy="100" r="70"></circle></svg>
-                </div>
-            }
-        </>
-    )
-}
 
 function WishlistNameItem({ name, index, id, selectedListId, onSetSelectedListId }) {
     const [isSelected, setIsSelected] = useState(false);
@@ -100,8 +88,6 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
     const addToWishlistFetcher = useFetcher();
     const { wishlist } = useLoaderData();
     const [showCreateNewList, setshowCreateNewList] = useState(false);
-    const [showLoading, setshowLoading] = useState(false);
-    const [showListLoading, setshowListLoading] = useState(false);
     const [customListName, setcustomListName] = useState('');
     const [wishlistName, setWishlistName] = useState('');
     const [selectedListId, setSelectedListId] = useState('');
@@ -239,7 +225,7 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
                             </div>
                             <div className='swym-hl-modal-action'>
                                 <div className='swym-hl-bg-outline swym-hl-modal-action-btn' onClick={hideCreateNewList} >cancel</div>
-                                <div className='swym-hl-bg-color swym-hl-modal-action-btn swym-hl-text-color' onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleCreateWishlist() }}> <Loader width={20} showLoading={showLoading} /> Create</div>
+                                <div className='swym-hl-bg-color swym-hl-modal-action-btn swym-hl-text-color' onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleCreateWishlist() }}>Create</div>
                             </div>
                         </div>
                     )}
@@ -247,7 +233,6 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
                         <div>
                             <div className="swym-wishlist-items">
                                 <div className="swym-wishlist-items-title" role="radiogroup">Add To List</div>
-                                {(!wishlist || !wishlist.length) && <Loader showLoading={showListLoading} />}
                                 {wishlist && wishlist.length > 0 && wishlist.map(({ lname, lid }, index) => {
                                     return (
                                         <WishlistNameItem
@@ -263,7 +248,7 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
                             </div>
                             <div className='swym-hl-modal-action'>
                                 <div className='swym-hl-bg-outline swym-hl-modal-action-btn' onClick={createNewList} >Create New List</div>
-                                <div className='swym-hl-bg-color swym-hl-modal-action-btn swym-hl-text-color' onClick={() => handleAddToWishlist()}> <Loader width={20} showLoading={showLoading} /> Add To List</div>
+                                <div className='swym-hl-bg-color swym-hl-modal-action-btn swym-hl-text-color' onClick={() => handleAddToWishlist()}>Add To List</div>
                             </div>
                         </div>
                     )}

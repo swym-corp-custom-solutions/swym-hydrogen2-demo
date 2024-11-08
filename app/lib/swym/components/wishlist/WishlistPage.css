@@ -91,10 +91,15 @@
 }
 
 .swym-hl-wishlist-page-share-btn{
-  padding: 10px; 
-  border-radius: 9999px; 
-  border-width: 1px; 
-  cursor: pointer; 
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid lightgray;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .swym-hl-wishlist-page-list-container {

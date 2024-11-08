@@ -15,6 +15,12 @@ export function createSwymApiClient({
 
   const withCache = createWithCache({cache, waitUntil});
 
+  async function ensureRegId() {
+    if (!session.get(REG_ID)) {
+      await generateRegId();
+    }
+  }
+
   async function generateRegId(options = { cache: CacheNone() }) {
     return withCache(
       ['swym', request.url],
@@ -75,11 +81,7 @@ export function createSwymApiClient({
       ['swym', 'createList', lname],
       options.cache,
       async function () {
-        if (!session.get(REG_ID)) {
-          await generateRegId();  // Call generateRegId instead of callGenrateRegidAPI
-          return createList(lname);
-        }
-
+        await ensureRegId();
         let sessionid = session.get(SESSION_ID);
         let regid = session.get(REG_ID);
   
@@ -124,10 +126,7 @@ export function createSwymApiClient({
       ['swym', 'updateList', productId, variantId, lid],
       options.cache,
       async function () {
-        if (!session.get(REG_ID)) {
-          await generateRegId();  // Call generateRegId instead of callGenrateRegidAPI
-          return updateList(productId, variantId, productUrl, lid);
-        }
+        await ensureRegId();
   
         const urlencoded = new URLSearchParams();
         urlencoded.append('regid', session.get(REG_ID));
@@ -165,11 +164,9 @@ export function createSwymApiClient({
       ['swym', 'addToWishlist', productId, variantId],
       options.cache,
       async function () {
+        await ensureRegId();
         let lid = '';
-        if (!session.get(REG_ID)) {
-          await generateRegId();  // Ensure the session and regid exist
-          return addToWishlist(productId, variantId, productUrl, customLid);
-        } else if (customLid) {
+        if (customLid) {
           return updateList(productId, variantId, productUrl, customLid);
         } else {
           const response = await fetchWishlist();
@@ -191,10 +188,7 @@ export function createSwymApiClient({
       ['swym', 'removeFromWishlist', productId, variantId],
       options.cache,
       async function () {
-        if (!session.get(REG_ID)) {
-          await generateRegId();  // Call generateRegId instead of callGenrateRegidAPI
-          return removeFromWishlist(productId, variantId, productUrl, listId);
-        }
+        await ensureRegId();
   
         const urlencoded = new URLSearchParams();
         urlencoded.append('regid', session.get(REG_ID));
@@ -227,17 +221,12 @@ export function createSwymApiClient({
     );
   }
   
-
-  
   async function fetchWishlist(options = { cache: CacheLong() }) {
     return withCache(
       ['swym', 'fetchWishlist'],
       options.cache,
       async function () {
-        if (!session.get(REG_ID)) {
-          await generateRegId();  // Call generateRegId instead of callGenrateRegidAPI
-          return fetchWishlist();
-        }
+        await ensureRegId();
         var urlencoded = new URLSearchParams();
         urlencoded.append('regid', session.get(REG_ID));
         urlencoded.append('sessionid', session.get(SESSION_ID));
@@ -276,10 +265,7 @@ export function createSwymApiClient({
       ['swym', 'fetchListWithContents', lid],
       options.cache,
       async function () {
-        if (!session.get(REG_ID)) {
-          await generateRegId();  // Call generateRegId instead of callGenrateRegidAPI
-          return fetchListWithContents(lid);
-        }
+        await ensureRegId();
   
         const urlencoded = new URLSearchParams();
         urlencoded.append('regid', session.get(REG_ID));
@@ -311,10 +297,7 @@ export function createSwymApiClient({
       options.cache,
       async function () {
         
-        if (!session.get(REG_ID)) {
-          await generateRegId();  // Call generateRegId instead of callGenrateRegidAPI
-          return guestValidateSync(useremail);
-        }
+        await ensureRegId();
 
         const urlencoded = new URLSearchParams();
         urlencoded.append('regid', session.get(REG_ID));
@@ -356,5 +339,78 @@ export function createSwymApiClient({
     );
   }
   
-  return { generateRegId, createList, updateList, addToWishlist, removeFromWishlist, fetchWishlist, fetchListWithContents, guestValidateSync };
+  async function fetchPublicList(lid, options = { cache: CacheLong() }) {
+    return withCache(['swym', 'fetchPublicList', lid], options.cache, async () => {
+      await ensureRegId();
+      const urlencoded = new URLSearchParams({
+        regid: session.get(REG_ID),
+        sessionid: session.get(SESSION_ID),
+        lid,
+      });
+      const response = await fetch(
+        `${SWYM_CONFIG.SWYM_ENDPOINT}/api/v3/lists/markPublic?pid=${encodeURIComponent(SWYM_CONFIG.PID)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: urlencoded,
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to mark list as public");
+      }
+      return await response.json();
+    });
+  }
+
+  async function shareWishlistViaEmail(publicLid, senderName, emailValue, options = { cache: CacheLong() }) {
+    return withCache(['swym', 'shareWishlistViaEmail'], options.cache, async () => {
+      await ensureRegId();
+      const urlencoded = new URLSearchParams({
+        regid: session.get(REG_ID),
+        sessionid: session.get(SESSION_ID),
+        lid: publicLid,
+        fromname: senderName,
+        toemail: emailValue,
+      });
+      const response = await fetch(
+        `${SWYM_CONFIG.SWYM_ENDPOINT}/api/v3/lists/emailList?pid=${encodeURIComponent(SWYM_CONFIG.PID)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: urlencoded,
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to share wishlist via email");
+      }
+      return await response.json();
+    });
+  }
+
+  async function copyWishlistLink(publicLid, medium, shareListSenderName, options = { cache: CacheLong() }) {
+    return withCache(['swym', 'copyWishlistLink'], options.cache, async () => {
+      await ensureRegId();
+      const urlencoded = new URLSearchParams({
+        regid: session.get(REG_ID),
+        sessionid: session.get(SESSION_ID),
+        lid: publicLid,
+        fromname: shareListSenderName,
+        medium,
+      });
+      const response = await fetch(
+        `${SWYM_CONFIG.SWYM_ENDPOINT}/api/v3/lists/reportShare?pid=${encodeURIComponent(SWYM_CONFIG.PID)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: urlencoded,
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to copy wishlist link");
+      }
+      return await response.json();
+    });
+  }
+
+  return { generateRegId, createList, updateList, addToWishlist, removeFromWishlist, fetchWishlist, fetchListWithContents, guestValidateSync, fetchPublicList, shareWishlistViaEmail, copyWishlistLink };
 }

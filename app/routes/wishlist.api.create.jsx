@@ -3,14 +3,6 @@ import { REG_ID, SESSION_ID } from "~/lib/swym/swymConstants";
 import { CacheNone } from '@shopify/hydrogen';
 
 export const loader = async ({ context }) => {
-  
-    const sessionId = context.session.get(SESSION_ID);
-    const regId = context.session.get(REG_ID);
-    
-    if (!sessionId || !regId) {
-        await context.swym.generateRegId();
-    }
-   
     const wishlist = await context.swym.fetchWishlist({cache:CacheNone()});
     return {wishlist};
 };

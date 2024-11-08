@@ -67,15 +67,14 @@ export default function WishlistPage() {
           </h3>
         </div>
         <br />
+        {selectedListData && selectedListData.length > 0 && (
+          <p className='swym-hl-wishlist-shared-info'>You are viewing a read-only list shared by {senderEmail}</p>
+        )}
         <div className='swym-hl-wishlist-page-list-container'>
-          {selectedListData && selectedListData.length > 0 && (
-            <div>
-              <p className='swym-hl-wishlist-shared-info'>You are viewing a read-only list shared by {senderEmail}</p>
-              {selectedListData.map((item) => (
-                <WishlistItem key={item.epi} productId={item.empi} variantId={item.epi} title={item.dt} product={item} readOnly={true} />
-              ))}
-            </div>
-            )
+          {selectedListData && selectedListData.length > 0 && 
+            selectedListData.map((item) => (
+              <WishlistItem key={item.epi} productId={item.empi} variantId={item.epi} title={item.dt} product={item} readOnly={true} />
+            ))
           }
         </div>
       </div>}
