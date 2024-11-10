@@ -83,7 +83,7 @@ function WishlistNameItem({ name, index, id, selectedListId, onSetSelectedListId
     );
 }
 
-export default function AddToWishlistPopup({ title, productId, variantId, productUrl, image, onPopupToggle, setshowAlertBox, setalertBox, onAddedToWishlist }) {
+export default function AddToWishlistPopup({ title, productId, variantId, productUrl, image, onPopupToggle, onAddedToWishlist }) {
     const createWishlistFetcher = useFetcher();
     const addToWishlistFetcher = useFetcher();
     const { wishlist } = useLoaderData();

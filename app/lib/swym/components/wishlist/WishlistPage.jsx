@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import './WishlistPage.css';
 import WishlistItem from './WishlistItem';
 import ShareListPopup from './ShareListPopup';
+import WishlistNotification from './WishlistNotification';
 
 export function EmptyWishlist(){
   return (
@@ -50,8 +51,8 @@ export default function WishlistPage() {
   const [selectedList, setselectedList] = useState();
   const [selectedListData, setselectedListData] = useState();
   
-  const [showAlertBox, setshowAlertBox] = useState(false);
-  const [alertBox, setalertBox ] = useState({ type: 'success', title:'', info: '', image: null });
+  const [showWishlistNotification, setShowWishlistNotification] = useState(false);
+  const [wishlistNotification, setWishlistNotification] = useState({ type: 'success', title:'', info: '', image: '' });
 
   const [selectedListIndex, setselectedListIndex] = useState(0);
   const [showLoading, setshowLoading] = useState(true);
@@ -88,7 +89,13 @@ export default function WishlistPage() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const removeItemFromWishlist = (item) => {
+  useEffect(() => {
+    if(removeItemFetcher.data){
+      setShowWishlistNotification(true);
+    }
+  }, [removeItemFetcher.data]);
+
+  const removeItemFromWishlist = async (item) => {
     removeItemFetcher.submit(
       {
         productId:item.empi,
@@ -98,6 +105,7 @@ export default function WishlistPage() {
       },
       { method: 'post', action: '/wishlist/api/remove' }
     );
+    setWishlistNotification({ type: 'success', title:'Success', info: `Item removed from wishlist`, image: item.iu });
   };
 
   return (
@@ -186,7 +194,7 @@ export default function WishlistPage() {
                   </svg>
                 </div>
                 {openShareModal && (
-                  <ShareListPopup selectedList={selectedList} onPopupToggle={setOpenShareModal} />
+                  <ShareListPopup selectedList={selectedList} onPopupToggle={setOpenShareModal}  setWishlistNotification={setWishlistNotification} setShowWishlistNotification={setShowWishlistNotification} />
                 )}
               </div>
             )}
@@ -200,6 +208,14 @@ export default function WishlistPage() {
             ))}
         </div>
       </div>}
+      <WishlistNotification
+        open={showWishlistNotification}
+        toggleAlertState={setShowWishlistNotification}
+        title={wishlistNotification.title}
+        image={wishlistNotification.image}
+        info={wishlistNotification.info}
+        type={wishlistNotification.type}
+      />
     </div>
   );
 }

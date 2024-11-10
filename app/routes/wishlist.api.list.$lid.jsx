@@ -25,7 +25,7 @@ export const loader = async ({ params, context }) => {
       if (productData) {
         const selectedVariant = productData.variants.edges.find(variant => variant.node.id === `gid://shopify/ProductVariant/${epi}`);
         const variantData = selectedVariant?.node;
-        const iu = variantData.image.url;
+        const iu = variantData.image?.url;
         listContents.push({
           ...item,
           productData,

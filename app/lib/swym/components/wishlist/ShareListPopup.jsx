@@ -4,7 +4,7 @@ import { useFetcher, useLoaderData } from '@remix-run/react';
 import { getSharedURL, getWishlistBadgeLetters, validateEmail } from '~/lib/swym/Utils/utilsFunction';
 import SWYM_CONFIG from '../../swymconfig';
 
-export default function ShareListPopup({ selectedList, onPopupToggle }) {
+export default function ShareListPopup({ selectedList, onPopupToggle, setWishlistNotification, setShowWishlistNotification}) {
     const markPublicListFetcher = useFetcher();
     const shareViaEmailFetcher = useFetcher();
     const [senderName, setSenderName] = useState('');
@@ -12,7 +12,6 @@ export default function ShareListPopup({ selectedList, onPopupToggle }) {
     const [publicLid, setPublicLid] = useState(selectedList?.lid);
     const [emailError, setEmailError] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(true);
-    
 
     let hostName = window.location.host;
     let medium = SWYM_CONFIG.swymSharedMediumCopyLink;
@@ -47,6 +46,10 @@ export default function ShareListPopup({ selectedList, onPopupToggle }) {
             .catch(() => {
                 console.log({ type: 'error', title: 'Error!', info: 'Link could not be copied' });
             });
+
+            setWishlistNotification({ type: 'success', title:'Success', info: `Link Copied` });
+            setShowWishlistNotification(true);
+            onPopupToggle(false);
     };
 
     const onChangeEmail = (e) => {
@@ -67,6 +70,8 @@ export default function ShareListPopup({ selectedList, onPopupToggle }) {
         if (shareViaEmailFetcher.data) {
             console.log('shared email',shareViaEmailFetcher.data)
             onPopupToggle(false);
+            setWishlistNotification({ type: 'success', title:'Success', info: `Email Sent Successfully` });
+            setShowWishlistNotification(true);
         }
     }, [shareViaEmailFetcher.data]);
 
@@ -139,52 +144,6 @@ export default function ShareListPopup({ selectedList, onPopupToggle }) {
                     </div>
                 </div>
             </div>
-            {/* <div id="swym-hl-add-to-list-popup" className="modal" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onPopupToggle(false) }}>
-                <div className="swym-hl-modal-content" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
-                    <span className="swym-hl-modal-close-btn" onClick={() => onPopupToggle(false)}>&times;</span>
-                    <div className="swym-hl-product-title">
-                        <div className="swym-hl-product-image">
-                            <img src={image} alt="" />
-                        </div>
-                        <h3 className="swym-product-name swym-heading swym-heading-1 swym-title-new">{title}</h3>
-                    </div>
-                    <div className="swym-hl-product-content">
-                        {showCreateNewList && (
-                            <div>
-                                <div className="swym-hl-new-wishlist-item swym-hl-new-wishlist-input-container">
-                                    <input
-                                        type="text"
-                                        className={`swym-new-wishlist-name swym-no-zoom-fix swym-input ${error ? 'swym-input-has-error' : ''}`}
-                                        onChange={(e) => {
-                                            validateAndSetListName(e.target.value);
-                                        }}
-                                        placeholder="Enter Wishlist Name"
-                                        value={wishlistName}
-                                    />
-                                    <span className="error-msg" role="alert">
-                                        {error}
-                                    </span>
-                                </div>
-                                <div className='swym-hl-modal-action'>
-                                    <div className='swym-hl-bg-outline swym-hl-modal-action-btn' onClick={hideCreateNewList} >cancel</div>
-                                    <div className='swym-hl-bg-color swym-hl-modal-action-btn swym-hl-text-color' onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleCreateWishlist() }}>Create</div>
-                                </div>
-                            </div>
-                        )}
-                        {!showCreateNewList && (
-                            <div>
-                                <div className="swym-wishlist-items">
-                                    <div className="swym-wishlist-items-title" role="radiogroup">Add To List</div>
-                                </div>
-                                <div className='swym-hl-modal-action'>
-                                    <div className='swym-hl-bg-outline swym-hl-modal-action-btn' onClick={createNewList} >Create New List</div>
-                                    <div className='swym-hl-bg-color swym-hl-modal-action-btn swym-hl-text-color' onClick={() => handleAddToWishlist()}>Add To List</div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div> */}
         </div>
     )
 }

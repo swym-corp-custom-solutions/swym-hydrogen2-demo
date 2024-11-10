@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLoaderData } from '@remix-run/react';
 import AddToWishlistPopup from './AddToWishlistPopup';
 import './WishlistButton.css';
+import WishlistNotification from './WishlistNotification';
 
 
 function WishlistIcon({ style }) {
@@ -34,6 +35,9 @@ const WishlistButton = ({ product, buttonType, addToMultiList }) => {
   const { wishlist } = useLoaderData();
   const [wishlisted, setwishlisted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [showWishlistNotification, setShowWishlistNotification] = useState(false);
+  const [wishlistNotification, setWishlistNotification] = useState({ type: 'success', title:'', info: '', image: '' });
   
   const getProductId = () => {
     if (product?.id) {
@@ -111,6 +115,8 @@ const WishlistButton = ({ product, buttonType, addToMultiList }) => {
         <AddToWishlistPopup title={product?.title} productId={getProductId()} variantId={getProductVariantId()} productUrl={getProductUrl()} image={getProductImage()} onPopupToggle={setIsModalOpen} 
           onAddedToWishlist={()=>{
               setwishlisted(true);
+              setWishlistNotification({ type: 'success', title:'Success', info: `Item Added to wishlist`, image: getProductImage() });
+              setShowWishlistNotification(true);
           }}  
         />
       )}
@@ -118,6 +124,14 @@ const WishlistButton = ({ product, buttonType, addToMultiList }) => {
         { ( buttonType == 'icon' || buttonType == 'icontext' ) && <WishlistIcon style={{ marginRight: '5px'}} /> }
         { ( buttonType != 'icon' ) && <span className='swym-hl-text-color'>{wishlisted?'Added':'Add'} to Wishlist</span> }
       </div>
+      <WishlistNotification
+        open={showWishlistNotification}
+        toggleAlertState={setShowWishlistNotification}
+        title={wishlistNotification.title}
+        image={wishlistNotification.image}
+        info={wishlistNotification.info}
+        type={wishlistNotification.type}
+      />
     </>
   );
 };
