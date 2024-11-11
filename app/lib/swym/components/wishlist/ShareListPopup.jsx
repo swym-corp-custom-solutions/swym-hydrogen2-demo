@@ -97,7 +97,7 @@ export default function ShareListPopup({ selectedList, onPopupToggle, setWishlis
                 <div className="swym-hl-share-modal-content" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
                     <span className="swym-hl-share-modal-close-btn" onClick={() => onPopupToggle(false)}>&times;</span>
                     <div className="swym-hl-share-heading">
-                        <h3>Share Wishlist</h3>
+                        Share Wishlist
                     </div>
                     <div className="swym-hl-share-body">
                         <div className="swym-hl-share-content">
