@@ -1,32 +1,7 @@
 import SWYM_CONFIG from '../swymconfig';
-export function getFullUserName(firstName, lastName, email) {
-  let name = '';
-  if (firstName) {
-    name += firstName;
-  }
-  if (lastName) {
-    if (firstName) {
-      name += ' ';
-    }
-    name += lastName;
-  }
-  if (!firstName && !lastName && email) {
-    return email;
-  }
-  return name;
-}
 
 export function getSharedURL(hostname, lid) {
   return `${hostname}/${SWYM_CONFIG.swymSharedURL}?hkey=${lid}&lid=${lid}`;
-}
-
-export function validateStringOptional(str, optionsObj) {
-  if (str && str.length < optionsObj.minLength) {
-    return optionsObj.minLengthError;
-  }
-  if (str && str.length > optionsObj.maxLength) {
-    return optionsObj.maxLengthError;
-  }
 }
 
 export function validateEmail(email, errorMsg) {
@@ -36,14 +11,6 @@ export function validateEmail(email, errorMsg) {
     return errorMsg;
   }
 }
-
-/*
-  @author: swym
-  @notice: badge for wishlist list name
-  @dev:    badge icon for wishlist icon created by wishlist name
-  @param:  wishlistName - name of wishlist
-  @param:  defaultText - default wishlist name
-*/
 
 export function getWishlistBadgeLetters(wishlistName, defaultText) {
   if (!wishlistName) {
