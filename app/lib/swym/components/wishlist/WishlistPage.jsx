@@ -55,11 +55,8 @@ export default function WishlistPage() {
   const [wishlistNotification, setWishlistNotification] = useState({ type: 'success', title:'', info: '', image: '' });
 
   const [selectedListIndex, setselectedListIndex] = useState(0);
-  const [showLoading, setshowLoading] = useState(true);
   const [wishlistCreatedLists, setWishlistCreatedLists] = useState([]);
   const [openShareModal, setOpenShareModal] = useState(false);
-  const [swymAccessToken, setSwymAccessToken] = useState(false);
-  const [variantDeleted, setVariantDeleted] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const { listContents, listContentFetcher } = useWishlistData(selectedList);
