@@ -322,3 +322,7 @@
 .swym-wishlist-items div:last-child button {
   border-bottom: 0px solid transparent !important;
 }
+
+#swym-hl-add-to-list-popup img {
+  width: 100%;
+}

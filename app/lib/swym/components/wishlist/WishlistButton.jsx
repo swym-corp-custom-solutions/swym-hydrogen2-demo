@@ -68,6 +68,8 @@ const WishlistButton = ({ product, buttonType, addToMultiList }) => {
       return product.featuredImage?.url;
     }else if(product && product.selectedVariant && product.selectedVariant.image){
       return product.selectedVariant.image.url;
+    }else if(product && product.images && product.images.nodes[0]){
+      return product.images.nodes[0].url;
     }
   }
 
