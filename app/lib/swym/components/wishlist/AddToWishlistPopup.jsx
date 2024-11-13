@@ -119,7 +119,6 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
     }, [createWishlistFetcher.data, wishlist, selectedListId]);
 
     useEffect(() => {
-        console.log('addToWishlistFetcher.data', addToWishlistFetcher.data);
         if(addToWishlistFetcher.data && addToWishlistFetcher.data.data){
             let selectedWishlist = wishlist.find((item) => item.lid == selectedListId);
             if(addToWishlistFetcher.data.data.hasError){
