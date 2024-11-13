@@ -42,6 +42,7 @@ export const loadwishlistData = async ({ context, request }) => {
     const isLoggedIn = await context.customerAccount.isLoggedIn();
     const { data, email } = await syncUser({ context });
     const wishlist = await context.swym.fetchWishlist({ cache: CacheNone()});
+    console.log('on load fetch wishlist', wishlist);
     return { wishlist, email, isLoggedIn };
 };
 

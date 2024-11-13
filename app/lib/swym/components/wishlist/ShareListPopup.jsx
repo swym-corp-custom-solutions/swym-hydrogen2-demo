@@ -47,7 +47,7 @@ export default function ShareListPopup({ selectedList, onPopupToggle, setWishlis
                 console.log({ type: 'error', title: 'Error!', info: 'Link could not be copied' });
             });
 
-            setWishlistNotification({ type: 'success', title:'Success', info: `Link Copied` });
+            setWishlistNotification({ type: 'success', title:'Success', info: `URL to the ${selectedList.lname} copied to clipboard` });
             setShowWishlistNotification(true);
             onPopupToggle(false);
     };

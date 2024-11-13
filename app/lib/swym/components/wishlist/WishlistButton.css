@@ -1,8 +1,13 @@
- 
+.swym-hl-btn-center-align{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
  .swym-hl-wl-icon{
      width: fit-content;
      background: transparent;
-     color: pink;
+     color: white;
  }
  
  .swym-hl-wl-btn{
@@ -12,12 +17,16 @@
      font-weight: 500;
  }
  
- .swym-hl-btn-center-align{
-     align-items: center;
-     display: flex;
-     justify-content: center;
+ .swym-hl-wl-btn svg{
+    stroke: black;
+ }
+
+ .swym-hl-wl-btn svg:hover{
+    stroke: black;
+    color: red;
  }
  
- .swym-hl-product-wishlisted{
-     color: red;
+ .swym-hl-product-wishlisted svg{
+    stroke: black;
+    color: red;
  }

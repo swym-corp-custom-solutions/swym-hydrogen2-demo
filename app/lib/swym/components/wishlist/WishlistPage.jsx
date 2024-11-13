@@ -171,8 +171,8 @@ export default function WishlistPage() {
             { selectedList.lname}{' '}
             {` (${selectedList.listcontents?.length})`}
           </h2>
-          { isLoggedIn && (
-              <div>
+          { isLoggedIn && selectedList.listcontents?.length > 0 && (
+              <>
                 <div
                   className="swym-hl-wishlist-page-share-btn"
                   onClick={(event) => {
@@ -193,7 +193,7 @@ export default function WishlistPage() {
                 {openShareModal && (
                   <ShareListPopup selectedList={selectedList} onPopupToggle={setOpenShareModal}  setWishlistNotification={setWishlistNotification} setShowWishlistNotification={setShowWishlistNotification} />
                 )}
-              </div>
+              </>
             )}
         </div>
         <br />

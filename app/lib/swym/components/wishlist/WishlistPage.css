@@ -81,13 +81,15 @@
 
 .swym-hl-wl-content-header{
   display: flex;
+  align-items: baseline;
 }
 
 .swym-hl-wl-selected-lname{
-  flex: 1 1 0%; 
+  //flex: 1 1 0%; 
   font-size: 1.25rem;
   line-height: 1.75rem; 
   font-weight: 700; 
+  margin-right: 10px;
 }
 
 .swym-hl-wishlist-page-share-btn{

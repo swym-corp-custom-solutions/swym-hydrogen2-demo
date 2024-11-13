@@ -76,7 +76,7 @@ export function createSwymApiClient({
     );
   }
 
-  async function createList(lname = 'My Wishlist', options = { cache: CacheLong() }) {
+  async function createList(lname = SWYM_CONFIG.defaultWishlistName, options = { cache: CacheNone() }) {
     return withCache(
       ['swym', 'createList', lname],
       options.cache,
@@ -121,7 +121,7 @@ export function createSwymApiClient({
   }
   
 
-  async function updateList(productId, variantId, productUrl, lid, options = { cache: CacheLong() }) {
+  async function updateList(productId, variantId, productUrl, lid, options = { cache: CacheNone() }) {
     return withCache(
       ['swym', 'updateList', productId, variantId, lid],
       options.cache,
@@ -132,7 +132,7 @@ export function createSwymApiClient({
         urlencoded.append('regid', session.get(REG_ID));
         urlencoded.append('sessionid', session.get(SESSION_ID));
         urlencoded.append('lid', lid);
-        urlencoded.append('a', `[{ "epi":${variantId}, "empi": ${productId}, "du":"${productUrl}" , "_cv":true , "cprops": {"ou":"${productUrl}"}, "note": null, "qty": 1 }]`);
+        urlencoded.append('a', `[{ "epi":${variantId}, "empi": ${productId}, "du":"${productUrl}" , "cprops": {"ou":"${productUrl}"}, "note": null, "qty": 1 }]`);
   
         const swymApiEndpoint = `${SWYM_CONFIG.SWYM_ENDPOINT}/api/v3/lists/update-ctx?pid=${encodeURIComponent(SWYM_CONFIG.PID)}`;
 
@@ -159,7 +159,7 @@ export function createSwymApiClient({
   }  
   
   
-  async function addToWishlist(productId, variantId, productUrl, customLid, options = { cache: CacheLong() }) {
+  async function addToWishlist(productId, variantId, productUrl, customLid, options = { cache: CacheNone() }) {
     return withCache(
       ['swym', 'addToWishlist', productId, variantId],
       options.cache,
@@ -183,7 +183,7 @@ export function createSwymApiClient({
     );
   }
 
-  async function removeFromWishlist(productId, variantId, productUrl, listId, options = { cache: CacheLong() }) {
+  async function removeFromWishlist(productId, variantId, productUrl, listId, options = { cache: CacheNone() }) {
     return withCache(
       ['swym', 'removeFromWishlist', productId, variantId],
       options.cache,
@@ -362,7 +362,7 @@ export function createSwymApiClient({
     });
   }
 
-  async function shareWishlistViaEmail(publicLid, senderName, emailValue, options = { cache: CacheLong() }) {
+  async function shareWishlistViaEmail(publicLid, senderName, emailValue, options = { cache: CacheNone() }) {
     return withCache(['swym', 'shareWishlistViaEmail'], options.cache, async () => {
       await ensureRegId();
       const urlencoded = new URLSearchParams({
@@ -387,7 +387,7 @@ export function createSwymApiClient({
     });
   }
 
-  async function copyWishlistLink(publicLid, medium, shareListSenderName, options = { cache: CacheLong() }) {
+  async function copyWishlistLink(publicLid, medium, shareListSenderName, options = { cache: CacheNone() }) {
     return withCache(['swym', 'copyWishlistLink'], options.cache, async () => {
       await ensureRegId();
       const urlencoded = new URLSearchParams({

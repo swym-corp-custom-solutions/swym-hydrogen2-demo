@@ -28,8 +28,6 @@
     cursor: pointer;
     color: gray;
     background: white;
-    border-radius: 50%;
-    box-shadow: 0 0.5px 0.7px 0.5px lightgray;
     justify-content: center;
     display: flex;
     align-items: center;
@@ -71,7 +69,7 @@
     }
 }
 
-.swym-hl-listitem:hover{
+.swym-hl-listitem:hover img{
     transform: scale(1.05);
     transition: transform 0.1s ease-in-out;
 }
@@ -83,13 +81,13 @@
 }
 
 .swym-hl-wishlist-item-content button {
-    /* all: unset; */
     width: 100%;
     padding: 10px;
     background: #035587;
     color: white;
     text-align: center;
     cursor: pointer;
+    border: unset;
 }
 
 .swym-hl-wishlist-item-content button:disabled {

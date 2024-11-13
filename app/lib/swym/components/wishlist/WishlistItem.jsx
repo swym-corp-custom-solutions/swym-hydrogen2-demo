@@ -8,16 +8,18 @@ export default function WishlistItem({ productId, variantId, product, readOnly =
     return (
         <div className='swym-hl-listitem'>
             <div className='swym-hl-wishlist-item-content'>
-                <a className='' aria-label={product['dt']} href={product.cprops?.ou} >
-                    <img
-                        className="w-full"
-                        alt={product['dt'] || 'Product Image'}
-                        src={product['iu']}
-                    />
-                    <div className="swym-hl-list-item-title">{product['dt']}</div>
+                <div>
+                    <a className='' aria-label={product['dt']} href={product.cprops?.ou}>
+                        <img
+                            className="w-full"
+                            alt={product['dt'] || 'Product Image'}
+                            src={product['iu']}
+                        />
+                        <div className="swym-hl-list-item-title">{product['dt']}</div>
+                    </a>
                     <div className='swym-hl-list-item-vendor'>{product['bt']}</div>
                     <div className="swym-hl-list-item-price">${product['pr']}</div>
-                </a>
+                </div>
                 <AddToCartButton
                     className="swym-hl-add-to-cart-btn"
                     disabled={!selectedVariant || !selectedVariant.availableForSale}

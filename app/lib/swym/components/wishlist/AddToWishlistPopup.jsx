@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import './AddToWishlistPopup.css';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { getWishlistBadgeLetters } from '~/lib/swym/Utils/utilsFunction';
+import SWYM_CONFIG from '../../swymconfig';
 
 
 export function validateString(name, errorsObj) {
@@ -89,7 +90,7 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
     const { wishlist } = useLoaderData();
     const [showCreateNewList, setshowCreateNewList] = useState(false);
     const [customListName, setcustomListName] = useState('');
-    const [wishlistName, setWishlistName] = useState('');
+    const [wishlistName, setWishlistName] = useState(SWYM_CONFIG.defaultWishlistName);
     const [selectedListId, setSelectedListId] = useState('');
     const [error, setError] = useState();
 
@@ -99,21 +100,33 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
         }else{
             setSelectedListId(wishlist[0].lid)
         }
-    }, [])
+    }, []);
+
 
     useEffect(() => {
         let createdListData = createWishlistFetcher.data;
         if(createdListData && createdListData.data){
             setSelectedListId(createdListData.data.lid);
-            setWishlistName('')
+            console.log('created list data', createdListData.data);
+            console.log('selected list', selectedListId);
+            setWishlistName(SWYM_CONFIG.defaultWishlistName)
             hideCreateNewList();
         }
     }, [createWishlistFetcher.data]);
 
     useEffect(() => {
+        console.log('on wishlist change ', createWishlistFetcher.data, wishlist, selectedListId);
+        if(createWishlistFetcher.data && wishlist.length==1){
+            handleAddToWishlist();
+        }
+    }, [createWishlistFetcher.data, wishlist, selectedListId]);
+
+    useEffect(() => {
         if(addToWishlistFetcher.data){
             onPopupToggle(false);
-            onAddedToWishlist();
+            let selectedWishlist = wishlist.find((item) => item.lid == selectedListId);
+            console.log('selected Wishlist', selectedWishlist);
+            onAddedToWishlist(selectedWishlist);
         }
     }, [addToWishlistFetcher.data]);
 
@@ -121,6 +134,12 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
         if (!wishlistName) {
             setError('Please enter a wishlist name.');
             return;
+        }else{
+            let error = validateWishlistName(wishlistName)
+            setError(error);
+            if(error){
+                return;
+            }
         }
 
         createWishlistFetcher.submit(
@@ -135,7 +154,6 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
 
     const handleAddToWishlist = async () => {
         if (!selectedListId) {
-            setError('Please select a wishlist.');
             return;
         }
 
@@ -200,11 +218,8 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
         <div id="swym-hl-add-to-list-popup" className="modal" onClick={(e) => { e.preventDefault(); e.stopPropagation(); onPopupToggle(false) }}>
             <div className="swym-hl-modal-content" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
                 <span className="swym-hl-modal-close-btn" onClick={() => onPopupToggle(false)}>&times;</span>
-                <div className="swym-hl-product-title">
-                    <div className="swym-hl-product-image">
-                        <img src={image} alt="" />
-                    </div>
-                    <h3 className="swym-product-name swym-heading swym-heading-1 swym-title-new">{title}</h3>
+                <div className="swym-hl-modal-heading">
+                    {showCreateNewList?"Create New Wishlist":"Add Product To Wishlist"}
                 </div>
                 <div className="swym-hl-product-content">
                     {showCreateNewList && (
@@ -231,8 +246,13 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
                     )}
                     {!showCreateNewList && (
                         <div>
+                            <div className='product-details'>
+                                <div className="swym-hl-product-image">
+                                    <img src={image} alt="" />
+                                </div>
+                                <span className='swym-hl-product-title'>{title}</span>
+                            </div>
                             <div className="swym-wishlist-items">
-                                <div className="swym-wishlist-items-title" role="radiogroup">Add To List</div>
                                 {wishlist && wishlist.length > 0 && wishlist.map(({ lname, lid }, index) => {
                                     return (
                                         <WishlistNameItem

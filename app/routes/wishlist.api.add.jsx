@@ -1,4 +1,11 @@
 import { json } from "@remix-run/react";
+import { CacheNone } from "@shopify/hydrogen";
+
+export const loader = async ({ context }) => {
+  const wishlist = await context.swym.fetchWishlist({cache:CacheNone()});
+  return {wishlist};
+};
+
 
 export const action = async ({ request, context }) => {
   const formData = await request.formData();

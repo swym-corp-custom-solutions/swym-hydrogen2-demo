@@ -68,7 +68,7 @@ export default function WishlistPage() {
         </div>
         <br />
         {selectedListData && selectedListData.length > 0 && (
-          <p className='swym-hl-wishlist-shared-info'>You are viewing a read-only list shared by {senderEmail}</p>
+          <p className='swym-hl-wishlist-shared-info'> {senderEmail} wanted you to take a look at his collection  { selectedList.lname}</p>
         )}
         <div className='swym-hl-wishlist-page-list-container'>
           {selectedListData && selectedListData.length > 0 && 
