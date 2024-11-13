@@ -114,7 +114,6 @@ const WishlistButton = ({ product, buttonType, addToMultiList }) => {
      {isModalOpen && (
         <AddToWishlistPopup title={product?.title} productId={getProductId()} variantId={getProductVariantId()} productUrl={getProductUrl()} image={getProductImage()} onPopupToggle={setIsModalOpen} 
           onAddedToWishlist={(data)=>{
-              console.log('on added ', data);
               setwishlisted(true);
               setWishlistNotification({ type: 'success', title:'Success', info: `Item Added to ${data.lname?data.lname:'Wishlist'}`, image: getProductImage() });
               setShowWishlistNotification(true);

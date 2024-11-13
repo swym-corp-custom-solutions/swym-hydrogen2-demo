@@ -56,7 +56,6 @@ export default function WishlistPage() {
     }
   }, [selectedList, listContentFetcher.data]);
 
-  console.log('selected list', selectedList);
 
   return (
     <div>

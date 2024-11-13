@@ -68,7 +68,6 @@ export default function ShareListPopup({ selectedList, onPopupToggle, setWishlis
 
     useEffect(() => {
         if (shareViaEmailFetcher.data) {
-            console.log('shared email',shareViaEmailFetcher.data)
             onPopupToggle(false);
             setWishlistNotification({ type: 'success', title:'Success', info: `Email Sent Successfully` });
             setShowWishlistNotification(true);

@@ -107,15 +107,12 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
         let createdListData = createWishlistFetcher.data;
         if(createdListData && createdListData.data){
             setSelectedListId(createdListData.data.lid);
-            console.log('created list data', createdListData.data);
-            console.log('selected list', selectedListId);
             setWishlistName(SWYM_CONFIG.defaultWishlistName)
             hideCreateNewList();
         }
     }, [createWishlistFetcher.data]);
 
     useEffect(() => {
-        console.log('on wishlist change ', createWishlistFetcher.data, wishlist, selectedListId);
         if(createWishlistFetcher.data && wishlist.length==1){
             handleAddToWishlist();
         }
@@ -125,7 +122,6 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
         if(addToWishlistFetcher.data){
             onPopupToggle(false);
             let selectedWishlist = wishlist.find((item) => item.lid == selectedListId);
-            console.log('selected Wishlist', selectedWishlist);
             onAddedToWishlist(selectedWishlist);
         }
     }, [addToWishlistFetcher.data]);
@@ -211,7 +207,6 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
     function validateAndSetListName(value) {
         setWishlistName(value);
         setError(validateWishlistName(value));
-        console.log(error);
     }
 
     return (
