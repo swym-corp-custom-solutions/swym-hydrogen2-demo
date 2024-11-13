@@ -120,6 +120,10 @@ const WishlistButton = ({ product, buttonType, addToMultiList }) => {
               setWishlistNotification({ type: 'success', title:'Success', info: `Item Added to ${data.lname?data.lname:'Wishlist'}`, image: getProductImage() });
               setShowWishlistNotification(true);
           }}  
+          onErrorAddingToWishlist={(data, errorMsg)=>{
+            setWishlistNotification({ type: 'error', title:'Error', info: `Error Adding Item to ${data.lname?data.lname:'Wishlist'} - ${errorMsg}`, image: getProductImage() });
+            setShowWishlistNotification(true);
+          }}
         />
       )}
        <div onClick={openModal} className={ ` ${buttonType == 'icon'?'swym-hl-wl-icon':''}  swym-hl-wl-btn swym-hl-bg-color ${wishlisted?'swym-hl-product-wishlisted':'swym-hl-text-color'} swym-hl-btn-center-align`}>

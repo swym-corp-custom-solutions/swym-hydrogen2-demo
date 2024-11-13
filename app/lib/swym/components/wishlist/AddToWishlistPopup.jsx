@@ -84,7 +84,7 @@ function WishlistNameItem({ name, index, id, selectedListId, onSetSelectedListId
     );
 }
 
-export default function AddToWishlistPopup({ title, productId, variantId, productUrl, image, onPopupToggle, onAddedToWishlist }) {
+export default function AddToWishlistPopup({ title, productId, variantId, productUrl, image, onPopupToggle, onAddedToWishlist, onErrorAddingToWishlist }) {
     const createWishlistFetcher = useFetcher();
     const addToWishlistFetcher = useFetcher();
     const { wishlist } = useLoaderData();
@@ -119,10 +119,16 @@ export default function AddToWishlistPopup({ title, productId, variantId, produc
     }, [createWishlistFetcher.data, wishlist, selectedListId]);
 
     useEffect(() => {
-        if(addToWishlistFetcher.data){
-            onPopupToggle(false);
+        console.log('addToWishlistFetcher.data', addToWishlistFetcher.data);
+        if(addToWishlistFetcher.data && addToWishlistFetcher.data.data){
             let selectedWishlist = wishlist.find((item) => item.lid == selectedListId);
-            onAddedToWishlist(selectedWishlist);
+            if(addToWishlistFetcher.data.data.hasError){
+                let errorMsg = addToWishlistFetcher.data.data.msg;
+                onErrorAddingToWishlist(selectedWishlist, errorMsg);
+            }else{
+                onAddedToWishlist(selectedWishlist);
+            }
+            onPopupToggle(false);
         }
     }, [addToWishlistFetcher.data]);
 

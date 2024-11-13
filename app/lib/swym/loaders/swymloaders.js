@@ -41,7 +41,7 @@ export const syncUser = async ({ context }) => {
 export const loadwishlistData = async ({ context, request }) => {
     const isLoggedIn = await context.customerAccount.isLoggedIn();
     const { data, email } = await syncUser({ context });
-    const wishlist = await context.swym.fetchWishlist({ cache: CacheNone()});
+    const wishlist = await context.swym.fetchWishlist();
     return { wishlist, email, isLoggedIn };
 };
 
@@ -50,6 +50,6 @@ export const loadShareWishlistData = async ({ context, request }) => {
     const hkey = url.searchParams.get("hkey");
     const lid = url.searchParams.get("lid");
     await syncUser({ context });
-    const listContent = await context.swym.fetchListWithContents(lid, { cache: CacheNone()});
+    const listContent = await context.swym.fetchListWithContents(lid);
     return { listContent };
 };

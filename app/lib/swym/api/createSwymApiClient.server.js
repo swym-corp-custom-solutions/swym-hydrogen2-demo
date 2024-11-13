@@ -1,4 +1,4 @@
-import {createWithCache, CacheLong, CacheNone} from '@shopify/hydrogen';
+import {createWithCache, CacheNone} from '@shopify/hydrogen';
 import { json } from "@remix-run/server-runtime";
 import { v4 as uuidv4 } from "uuid";
 import SWYM_CONFIG from '~/lib/swym/swymconfig';
@@ -221,7 +221,7 @@ export function createSwymApiClient({
     );
   }
   
-  async function fetchWishlist(options = { cache: CacheLong() }) {
+  async function fetchWishlist(options = { cache: CacheNone() }) {
     return withCache(
       ['swym', 'fetchWishlist'],
       options.cache,
@@ -260,7 +260,7 @@ export function createSwymApiClient({
     );
   }
 
-  async function fetchListWithContents(lid, options = { cache: CacheLong() }) {
+  async function fetchListWithContents(lid, options = { cache: CacheNone() }) {
     return withCache(
       ['swym', 'fetchListWithContents', lid],
       options.cache,
@@ -339,7 +339,7 @@ export function createSwymApiClient({
     );
   }
   
-  async function fetchPublicList(lid, options = { cache: CacheLong() }) {
+  async function fetchPublicList(lid, options = { cache: CacheNone() }) {
     return withCache(['swym', 'fetchPublicList', lid], options.cache, async () => {
       await ensureRegId();
       const urlencoded = new URLSearchParams({
